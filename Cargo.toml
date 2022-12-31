@@ -1,0 +1,12 @@
+[package]
+name = "see-through"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "A library of traits to provide access to internal fields of generic structs."
+exclude = [".github/*"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+see_derive = { path = "./see_derive" }
