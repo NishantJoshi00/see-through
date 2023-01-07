@@ -7,7 +7,7 @@ use syn::{parse_macro_input, DeriveInput};
 mod inner;
 
 ///
-/// Extension of the trait `See`, providing auto implementation for `See`,
+/// Derives the trait `See`, providing auto implementation for `See`,
 /// while also combining the loading visitors into a single place.
 ///
 /// ## Example
@@ -18,11 +18,36 @@ mod inner;
 ///     y: i32
 /// }
 /// ```
-/// This above example implements `See<crate::see_t::__x>` and `See<crate::see_t::__y>` for the point struct
+/// This above example implements `See<crate::see_t::X>` and `See<crate::see_t::Y>` for the point struct
 ///
 #[proc_macro_derive(See)]
 pub fn see_derive(input: TokenStream) -> TokenStream {
-    match inner::see_derive(parse_macro_input!(input as DeriveInput)) {
+    match inner::see_derive(parse_macro_input!(input as DeriveInput), false) {
+        Ok(res) => res,
+        Err(err) => err.into_compile_error(),
+    }
+    .into()
+}
+
+///
+/// Derives the trait `Look` as well as `See`, `Look` trait has autoimplemenation
+///
+/// ## Example
+/// ```rust
+/// #[derive(see_derive::Look)]
+/// struct Vector {
+///     x: i32,
+///     y: i32
+/// }
+///
+/// The above example implements:
+/// - `See<crate::see_t::X>`, `Look<crate::see_t::X>`
+/// - `See<crate::see_t::Y>`, `Look<crate::see_t::Y>`
+/// ```
+///
+#[proc_macro_derive(Look)]
+pub fn look_derive(input: TokenStream) -> TokenStream {
+    match inner::see_derive(parse_macro_input!(input as DeriveInput), true) {
         Ok(res) => res,
         Err(err) => err.into_compile_error(),
     }

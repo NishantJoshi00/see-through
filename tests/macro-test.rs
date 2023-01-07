@@ -1,13 +1,13 @@
-use see_derive::{Load, See};
+use see_derive::{Load, Look};
 use see_through::{Look, See};
 
-#[derive(See)]
+#[derive(Look)]
 struct Point {
     x: i32,
     y: i32,
 }
 
-#[derive(See)]
+#[derive(Look)]
 struct Vector {
     x: i32,
     y: i32,

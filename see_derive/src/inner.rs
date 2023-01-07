@@ -5,7 +5,12 @@ use syn::{spanned::Spanned, DeriveInput};
 
 static FIELDS: sync::Mutex<Vec<String>> = sync::Mutex::new(Vec::new());
 
-pub(crate) fn see_derive(input: DeriveInput) -> Result<TokenStream, syn::Error> {
+pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, syn::Error> {
+    let look = match look {
+        true => quote! { all() },
+        false => quote! { not(all()) },
+    };
+
     let name = &input.ident;
     let fields = match input.data {
         syn::Data::Struct(syn::DataStruct {
@@ -22,7 +27,6 @@ pub(crate) fn see_derive(input: DeriveInput) -> Result<TokenStream, syn::Error> 
     };
     let (field, types) = split_iter(fields);
     let (old_f, new_f) = split_iter(field);
-
     Ok(quote! {
         #(
             impl See<crate::see_t::#new_f> for #name {
@@ -35,6 +39,8 @@ pub(crate) fn see_derive(input: DeriveInput) -> Result<TokenStream, syn::Error> 
                 }
             }
 
+
+            #[cfg(#look)]
             impl std::ops::Index<crate::see_t::#new_f> for #name {
                 type Output = #types;
 
@@ -43,6 +49,7 @@ pub(crate) fn see_derive(input: DeriveInput) -> Result<TokenStream, syn::Error> 
                 }
             }
 
+            #[cfg(#look)]
             impl std::ops::IndexMut<crate::see_t::#new_f> for #name {
                 fn index_mut(&mut self, index: crate::see_t::#new_f) -> &mut Self::Output {
                     <Self as See<crate::see_t::#new_f>>::set(self)
