@@ -21,18 +21,18 @@ Though `See` provides us with ample ways to access inner field states, yet the s
 Checkout this example, it will make a lot of thing clear
 
 ```rust
-use see::{See, Look, see_derive::See};
-//        ↑                      ↑
-//        |                      +------ The derive
+use see::{See, Look, see_derive::{Look, self}};
+//        ↑                       ↑
+//        |                       +------ The derive
 //        +----------------------------- The trait           
 
-#[derive(See)]
+#[derive(Look)]
 struct Point2D {
     x: i32,
     y: i32
 }
 
-#[derive(See)]
+#[derive(Look)]
 struct Point3D {
     x: i32,
     y: i32,
@@ -40,10 +40,7 @@ struct Point3D {
 }
 
 // Once done using the derive or loading modules that have these derive calls do this
-pub(crate) mod see_t {
-    #[derive(Load)]
-    struct SeeT;
-}
+see_derive::auto_load!();
 
 // Done! Now let's write a function that modifies x coordinate
 
