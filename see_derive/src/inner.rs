@@ -8,7 +8,7 @@ static FIELDS: sync::Mutex<Vec<String>> = sync::Mutex::new(Vec::new());
 pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, syn::Error> {
     let look = match look {
         true => quote! { all() },
-        false => quote! { not(all()) }
+        false => quote! { not(all()) },
     };
 
     let name = &input.ident;
