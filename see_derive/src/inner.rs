@@ -62,6 +62,14 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
 pub(crate) fn load_fields(input: DeriveInput) -> TokenStream {
     create_struct_stream(input.span())
 }
+pub(crate) fn auto_load() -> TokenStream {
+    let struct_stream = create_struct_stream(Span::call_site());
+    quote! {
+        pub(crate) mod see_t {
+            #struct_stream
+        }
+    }
+}
 
 fn field_consumer(idn: Ident) -> (Ident, Ident) {
     let mut store = FIELDS.lock().unwrap();
