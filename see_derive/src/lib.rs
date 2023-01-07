@@ -78,3 +78,8 @@ pub fn look_derive(input: TokenStream) -> TokenStream {
 pub fn load_fields(input: TokenStream) -> TokenStream {
     inner::load_fields(parse_macro_input!(input as DeriveInput)).into()
 }
+
+#[proc_macro]
+pub fn auto_load(_input: TokenStream) -> TokenStream {
+    inner::auto_load().into()
+}

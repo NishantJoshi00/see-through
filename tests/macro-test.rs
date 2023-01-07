@@ -1,5 +1,4 @@
-use see_derive::{Load, Look};
-use see_through::{Look, See};
+use see_through::{see_derive::Look, Look, See};
 
 #[derive(Look)]
 struct Point {
@@ -47,8 +46,4 @@ fn test_see() {
     assert_eq!(p1.y, 2);
 }
 
-pub(crate) mod see_t {
-    use super::Load;
-    #[derive(Load)]
-    struct _SeeT;
-}
+see_derive::auto_load!();
