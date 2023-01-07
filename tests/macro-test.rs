@@ -39,8 +39,8 @@ fn test_look() {
 
 #[test]
 fn test_see() {
-    let mut p1 = Point {x: 12, y: 1};
-    let mut v1 = Vector {x: 100, y: 120};
+    let mut p1 = Point { x: 12, y: 1 };
+    let mut v1 = Vector { x: 100, y: 120 };
     modify_y(&mut v1);
     assert_eq!(v1.y, 121);
     modify_y(&mut p1);
