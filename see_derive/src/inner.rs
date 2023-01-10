@@ -6,9 +6,10 @@ use syn::{spanned::Spanned, DeriveInput};
 static FIELDS: sync::Mutex<Vec<String>> = sync::Mutex::new(Vec::new());
 
 pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, syn::Error> {
-    let look = match look {
-        true => quote! { all() },
-        false => quote! { not(all()) },
+    let look = if look {
+        quote! { all() }
+    } else {
+        quote! { not(all()) }
     };
 
     let name = &input.ident;
@@ -19,7 +20,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
         }) => named
             .into_iter()
             .filter_map(|field| field.ident.map(|idn| (idn, field.ty)))
-            .map(|(ident, ty)| (field_consumer(ident), ty)),
+            .map(|(ident, ty)| (field_consumer(&ident), ty)),
         _ => Err(syn::Error::new(
             input.clone().span(),
             "The datatype should be a struct with named fields",
@@ -59,7 +60,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
     })
 }
 
-pub(crate) fn load_fields(input: DeriveInput) -> TokenStream {
+pub(crate) fn load_fields(input: &DeriveInput) -> TokenStream {
     create_struct_stream(input.span())
 }
 pub(crate) fn auto_load() -> TokenStream {
@@ -71,19 +72,16 @@ pub(crate) fn auto_load() -> TokenStream {
     }
 }
 
-fn field_consumer(idn: Ident) -> (Ident, Ident) {
+fn field_consumer(idn: &Ident) -> (Ident, Ident) {
     let mut store = FIELDS.lock().unwrap();
-    match store.contains(&idn.to_string()) {
-        true => (),
-        false => {
-            store.push(idn.to_string());
-        }
+    if !store.contains(&idn.to_string()) {
+        store.push(idn.to_string());
     }
     (idn.clone(), field_to_ident(&idn.to_string(), idn.span()))
 }
 
-fn field_to_ident<'a>(name: &'a str, span: Span) -> Ident {
-    Ident::new(&format!("{}", name.to_uppercase()), span)
+fn field_to_ident(name: &str, span: Span) -> Ident {
+    Ident::new(&name.to_uppercase(), span)
 }
 
 fn create_struct_stream(span: Span) -> TokenStream {
