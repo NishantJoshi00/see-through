@@ -5,6 +5,7 @@ edition = "2021"
 license-file = "LICENSE"
 description = "A library of traits to provide access to internal fields of generic structs."
 exclude = [".github/*"]
+authors = ["Nishant Joshi <nishantjo.12@gmail.com>"]
 repository = "https://github.com/NishantJoshi00/see-through"
 readme = "README.md"
 keywords = ["functional", "haskell", "macro", "generics"]
@@ -12,5 +13,10 @@ categories = ["rust-patterns", "development-tools"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = []
+macros = ["dep:see_derive"]
+
+
 [dependencies]
-see_derive = { version = "0.0.1", path = "./see_derive" }
+see_derive = { version = "0.0.1", path = "./see_derive", optional = true }

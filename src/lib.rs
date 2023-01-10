@@ -1,5 +1,6 @@
 use std::ops;
 
+#[cfg(feature = "macros")]
 pub use see_derive;
 
 ///

@@ -3,7 +3,12 @@ name = "see_derive"
 version = "0.0.1"
 edition = "2021"
 license-file = "../LICENSE"
-description = "A sub-module for providing proc-macros for the main trait"
+description = "A sub-module for providing proc-macros for the `see-through` crate"
+authors = ["Nishant Joshi <nishantjo.12@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/NishantJoshi00/see-through"
+keywords = ["functional", "macro", "generic"]
+categories = ["rust-patterns", "development-tools"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
