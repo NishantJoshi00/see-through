@@ -11,6 +11,6 @@ description = "A sub-module for providing proc-macros for the main trait"
 proc-macro = true
 
 [dependencies]
-syn = "*"
-quote = "*"
-proc-macro2 = "*"
+syn = "1.0.107"
+quote = "1.0.23"
+proc-macro2 = "1.0.49"
