@@ -12,6 +12,18 @@ struct Vector {
     y: i32,
 }
 
+#[derive(Look)]
+struct Card<T> {
+    name: String,
+    number: T,
+}
+
+#[derive(Look)]
+struct Shoe<T> {
+    brand: T,
+    number: i32,
+}
+
 fn modify_y<T>(var: &mut T)
 where
     T: See<see_t::Y, Inner = i32>,
@@ -24,6 +36,14 @@ where
     T: Look<see_t::X, Inner = i32>,
 {
     var[see_t::X] += 12;
+}
+
+fn change_i32_number<T>(mut var: T, by: i32) -> T
+where
+    T: Look<see_t::NUMBER, Inner = i32>,
+{
+    var[see_t::NUMBER] += by;
+    var
 }
 
 #[test]
@@ -44,6 +64,39 @@ fn test_see() {
     assert_eq!(v1.y, 121);
     modify_y(&mut p1);
     assert_eq!(p1.y, 2);
+}
+
+#[test]
+fn test_generic_happy_case() {
+    let shoe = Shoe {
+        brand: "my",
+        number: 2,
+    };
+    let card = Card {
+        name: "dev".to_string(),
+        number: 2,
+    };
+    // let card = Card { name: "dev", number: "3" }; // This won't work
+
+    let card = change_i32_number(card, 2);
+    let shoe = change_i32_number(shoe, 2);
+
+    assert_eq!(card.number, shoe.number);
+}
+#[test]
+fn test_generic_panic_case() {
+    let shoe = Shoe {
+        brand: "my",
+        number: 2,
+    };
+    let card = Card {
+        name: "dev".to_string(),
+        number: "2",
+    };
+    // let card = Card { name: "dev", number: "3" }; // This won't work
+
+    // let card = change_i32_number(card, 2); <-- This won't work
+    let shoe = change_i32_number(shoe, 2);
 }
 
 see_derive::auto_load!();
