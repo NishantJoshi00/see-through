@@ -12,6 +12,8 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
         quote! { not(all()) }
     };
 
+    let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
+
     let name = &input.ident;
     let fields = match input.data {
         syn::Data::Struct(syn::DataStruct {
@@ -30,7 +32,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
     let (old_f, new_f) = split_iter(field);
     Ok(quote! {
         #(
-            impl See<crate::see_t::#new_f> for #name {
+            impl #impl_generics See<crate::see_t::#new_f> for #name #ty_generics #where_clause {
                 type Inner = #types;
                 fn get(&self) -> &Self::Inner {
                     &self.#old_f
@@ -42,7 +44,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
 
 
             #[cfg(#look)]
-            impl std::ops::Index<crate::see_t::#new_f> for #name {
+            impl #impl_generics std::ops::Index<crate::see_t::#new_f> for #name #ty_generics #where_clause {
                 type Output = #types;
 
                 fn index(&self, index: crate::see_t::#new_f) -> &Self::Output {
@@ -51,7 +53,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
             }
 
             #[cfg(#look)]
-            impl std::ops::IndexMut<crate::see_t::#new_f> for #name {
+            impl #impl_generics std::ops::IndexMut<crate::see_t::#new_f> for #name #ty_generics #where_clause {
                 fn index_mut(&mut self, index: crate::see_t::#new_f) -> &mut Self::Output {
                     <Self as See<crate::see_t::#new_f>>::set(self)
                 }

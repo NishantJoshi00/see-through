@@ -19,4 +19,4 @@ macros = ["dep:see_derive"]
 
 
 [dependencies]
-see_derive = { version = "0.0.1", path = "./see_derive", optional = true }
+see_derive = { version = "0.0.2", path = "./see_derive", optional = true }
