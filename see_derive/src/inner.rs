@@ -32,6 +32,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
     let (old_f, new_f) = split_iter(field);
     Ok(quote! {
         #(
+            #[automatically_derived]
             impl #impl_generics See<crate::see_t::#new_f> for #name #ty_generics #where_clause {
                 type Inner = #types;
                 fn get(&self) -> &Self::Inner {
@@ -44,6 +45,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
 
 
             #[cfg(#look)]
+            #[automatically_derived]
             impl #impl_generics std::ops::Index<crate::see_t::#new_f> for #name #ty_generics #where_clause {
                 type Output = #types;
 
@@ -53,6 +55,7 @@ pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, 
             }
 
             #[cfg(#look)]
+            #[automatically_derived]
             impl #impl_generics std::ops::IndexMut<crate::see_t::#new_f> for #name #ty_generics #where_clause {
                 fn index_mut(&mut self, index: crate::see_t::#new_f) -> &mut Self::Output {
                     <Self as See<crate::see_t::#new_f>>::set(self)

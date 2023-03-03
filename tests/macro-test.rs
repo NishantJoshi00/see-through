@@ -46,6 +46,13 @@ where
     var
 }
 
+fn look_both_use_get_one<T, U: Copy>(var: T) -> U
+where
+    T: Look<see_t::X, Inner = U> + Look<see_t::Y, Inner = U>,
+{
+    var[see_t::X]
+}
+
 #[test]
 fn test_look() {
     let mut p1 = Point { x: 12, y: 14 };
@@ -67,6 +74,15 @@ fn test_see() {
 }
 
 #[test]
+fn test_multiple_look() {
+    let p1 = Point { x: 12, y: 1 };
+    let v1 = Vector { x: 100, y: 120 };
+
+    assert_eq!(look_both_use_get_one(p1), 12);
+    assert_eq!(look_both_use_get_one(v1), 100);
+}
+
+#[test]
 fn test_generic_happy_case() {
     let shoe = Shoe {
         brand: "my",
@@ -76,7 +92,6 @@ fn test_generic_happy_case() {
         name: "dev".to_string(),
         number: 2,
     };
-    // let card = Card { name: "dev", number: "3" }; // This won't work
 
     let card = change_i32_number(card, 2);
     let shoe = change_i32_number(shoe, 2);
@@ -84,19 +99,9 @@ fn test_generic_happy_case() {
     assert_eq!(card.number, shoe.number);
 }
 #[test]
-fn test_generic_panic_case() {
-    let shoe = Shoe {
-        brand: "my",
-        number: 2,
-    };
-    let card = Card {
-        name: "dev".to_string(),
-        number: "2",
-    };
-    // let card = Card { name: "dev", number: "3" }; // This won't work
-
-    // let card = change_i32_number(card, 2); <-- This won't work
-    let shoe = change_i32_number(shoe, 2);
+fn test_generic_compile_failure() {
+    let t = trybuild::TestCases::new();
+    t.compile_fail("tests/compile_fail/*.rs");
 }
 
 see_derive::auto_load!();

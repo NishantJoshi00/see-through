@@ -1,6 +1,13 @@
 //!
-//! Derive For the traits `See` and an extension trait `Load`
+//! Derive For the traits `See` and an extension trait `Load` 
+//! [see-through][parent-crate]
 //!
+//!
+//!
+//! [parent-crate]: https://github.com/NishantJoshi00/see-through
+//!
+#![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR" ), "/", "README.md"))]
+
 
 use proc_macro::TokenStream;
 use syn::{parse_macro_input, DeriveInput};
@@ -12,6 +19,7 @@ mod inner;
 ///
 /// ## Example
 /// ```rust
+///
 /// #[derive(see_derive::See)]
 /// struct Point {
 ///     x: i32,
@@ -39,11 +47,11 @@ pub fn see_derive(input: TokenStream) -> TokenStream {
 ///     x: i32,
 ///     y: i32
 /// }
-///
+/// ```
 /// The above example implements:
 /// - `See<crate::see_t::X>`, `Look<crate::see_t::X>`
 /// - `See<crate::see_t::Y>`, `Look<crate::see_t::Y>`
-/// ```
+/// 
 ///
 #[proc_macro_derive(Look)]
 pub fn look_derive(input: TokenStream) -> TokenStream {
@@ -71,7 +79,7 @@ pub fn look_derive(input: TokenStream) -> TokenStream {
 ///     #[derive(see_derive::Load)]
 ///     struct SeeT;
 /// }
-/// ``
+/// ````
 ///
 ///
 #[proc_macro_derive(Load)]
