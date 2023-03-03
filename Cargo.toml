@@ -1,6 +1,6 @@
 [package]
 name = "see-through"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2021"
 license-file = "LICENSE"
 description = "A library of traits to provide access to internal fields of generic structs."
@@ -19,7 +19,7 @@ macros = ["dep:see_derive"]
 
 
 [dependencies]
-see_derive = { version = "0.0.4", path = "./see_derive", optional = true }
+see_derive = { version = "0.0.5", path = "./see_derive", optional = true }
 
 [dev-dependencies]
 trybuild = "1.0.77"
