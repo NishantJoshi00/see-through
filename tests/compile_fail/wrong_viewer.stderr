@@ -1,4 +1,4 @@
-error[E0271]: type mismatch resolving `<Card<&str> as See<NUMBER>>::Inner == i32`
+error[E0271]: type mismatch resolving `<Card<&str> as See<number>>::Inner == i32`
   --> tests/compile_fail/wrong_viewer.rs:36:34
    |
 36 |     let card = change_i32_number(card, 2); // <-- This won't work
@@ -12,5 +12,5 @@ note: required by a bound in `change_i32_number`
 16 | fn change_i32_number<T>(mut var: T, by: i32) -> T
    |    ----------------- required by a bound in this
 17 | where
-18 |     T: Look<see_t::NUMBER, Inner = i32>,
+18 |     T: Look<see_t::number, Inner = i32>,
    |                            ^^^^^^^^^^^ required by this bound in `change_i32_number`

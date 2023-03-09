@@ -15,9 +15,9 @@ struct Shoe<T> {
 
 fn change_i32_number<T>(mut var: T, by: i32) -> T
 where
-    T: Look<see_t::NUMBER, Inner = i32>,
+    T: Look<see_t::number, Inner = i32>,
 {
-    var[see_t::NUMBER] += by;
+    var[see_t::number] += by;
     var
 }
 

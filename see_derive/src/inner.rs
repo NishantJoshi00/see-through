@@ -3,9 +3,19 @@ use quote::quote;
 use std::sync;
 use syn::{spanned::Spanned, DeriveInput};
 
+
+// This hashmap stores information about all the fields that are needed through-out the codebase
 static FIELDS: sync::Mutex<Vec<String>> = sync::Mutex::new(Vec::new());
 
+// This function checks if the field generator is called before any other derivation of `Look` or
+// `See`
+static FIELD_GENERATOR_CALL: sync::atomic::AtomicBool = sync::atomic::AtomicBool::new(false);
+
 pub(crate) fn see_derive(input: DeriveInput, look: bool) -> Result<TokenStream, syn::Error> {
+    if FIELD_GENERATOR_CALL.load(sync::atomic::Ordering::Acquire) {
+        Err(syn::Error::new(input.span(), "The field generator `auto_load!` is alread called, the following code cannot be indexed"))?;
+
+    }
     let look = if look {
         quote! { all() }
     } else {
@@ -70,9 +80,15 @@ pub(crate) fn load_fields(input: &DeriveInput) -> TokenStream {
 }
 pub(crate) fn auto_load() -> TokenStream {
     let struct_stream = create_struct_stream(Span::call_site());
+    FIELD_GENERATOR_CALL.store(true, sync::atomic::Ordering::Release);
+
     quote! {
         pub(crate) mod see_t {
             #struct_stream
+
+            // This line provides an extra level of compile-time hinting on 
+            // where to call this macro
+            use crate::see_t;
         }
     }
 }
@@ -86,7 +102,7 @@ fn field_consumer(idn: &Ident) -> (Ident, Ident) {
 }
 
 fn field_to_ident(name: &str, span: Span) -> Ident {
-    Ident::new(&name.to_uppercase(), span)
+    Ident::new(&name, span)
 }
 
 fn create_struct_stream(span: Span) -> TokenStream {

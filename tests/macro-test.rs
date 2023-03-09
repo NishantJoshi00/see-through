@@ -26,31 +26,31 @@ struct Shoe<T> {
 
 fn modify_y<T>(var: &mut T)
 where
-    T: See<see_t::Y, Inner = i32>,
+    T: See<see_t::y, Inner = i32>,
 {
     *var.set() += 1;
 }
 
 fn modify_x<T>(var: &mut T)
 where
-    T: Look<see_t::X, Inner = i32>,
+    T: Look<see_t::x, Inner = i32>,
 {
-    var[see_t::X] += 12;
+    var[see_t::x] += 12;
 }
 
 fn change_i32_number<T>(mut var: T, by: i32) -> T
 where
-    T: Look<see_t::NUMBER, Inner = i32>,
+    T: Look<see_t::number, Inner = i32>,
 {
-    var[see_t::NUMBER] += by;
+    var[see_t::number] += by;
     var
 }
 
 fn look_both_use_get_one<T, U: Copy>(var: T) -> U
 where
-    T: Look<see_t::X, Inner = U> + Look<see_t::Y, Inner = U>,
+    T: Look<see_t::x, Inner = U> + Look<see_t::y, Inner = U>,
 {
-    var[see_t::X]
+    var[see_t::x]
 }
 
 #[test]

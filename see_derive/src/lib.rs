@@ -25,7 +25,7 @@ mod inner;
 ///     y: i32
 /// }
 /// ```
-/// This above example implements `See<crate::see_t::X>` and `See<crate::see_t::Y>` for the point struct
+/// This above example implements `See<crate::see_t::x>` and `See<crate::see_t::y>` for the point struct
 ///
 #[proc_macro_derive(See)]
 pub fn see_derive(input: TokenStream) -> TokenStream {
@@ -48,8 +48,8 @@ pub fn see_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 /// The above example implements:
-/// - `See<crate::see_t::X>`, `Look<crate::see_t::X>`
-/// - `See<crate::see_t::Y>`, `Look<crate::see_t::Y>`
+/// - `See<crate::see_t::x>`, `Look<crate::see_t::x>`
+/// - `See<crate::see_t::y>`, `Look<crate::see_t::y>`
 ///
 ///
 #[proc_macro_derive(Look)]
@@ -86,6 +86,12 @@ pub fn load_fields(input: TokenStream) -> TokenStream {
     inner::load_fields(&parse_macro_input!(input as DeriveInput)).into()
 }
 
+
+
+/// 
+/// This is an improved version of the [`Load`][load_fields] derive macro, but provides a few
+/// iherent compile time gurantees
+///
 #[proc_macro]
 pub fn auto_load(_input: TokenStream) -> TokenStream {
     inner::auto_load().into()

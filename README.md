@@ -55,7 +55,7 @@ see_derive::auto_load!();
 
 fn modify_x<T>(loc: &mut T, change: i32) 
 where
-    T: See<see_t::X, Inner = i32> 
+    T: See<see_t::x, Inner = i32> 
     // use see_t for getting the visitors and just specify your field with 2 underscores, 
     // and if need you can specify the type of inner or a morphism that's allowed on the inner type
 {
@@ -64,10 +64,10 @@ where
 
 fn modify_y<T>(loc: &mut T, change: i32)
 where
-    T: Look<see_t::Y, Inner = i32>
+    T: Look<see_t::y, Inner = i32>
     // `Look` is exactly similar to `See`
 {
-    loc[see_t::Y] = change;
+    loc[see_t::y] = change;
 }
 
 fn main3d() {

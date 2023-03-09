@@ -26,7 +26,7 @@ pub trait See<N> {
 /// A trait to provide an additional `ops::Index` functionality over `See`
 ///
 /// This trait, is an extension to that See trait, which also allows easier indexing with the help
-/// of `ops::Index`. This allows you to use simple formats like `value[see_t::X]` instead of using
+/// of `ops::Index`. This allows you to use simple formats like `value[see_t::x]` instead of using
 /// functions to get or set these values. This not only helps with ease of use, but also allows you
 /// to implement multiple Look clause on the generic, unlocking more lookups inside the generic.
 ///
